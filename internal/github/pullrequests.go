@@ -8,8 +8,8 @@ import (
 )
 
 func (c *Client) GetPullRequests(author string, since time.Time) ([]IssueSearchResultItem, error) {
-    // query := fmt.Sprintf("type:pr author:%s author-date:>%s", author, since.Format(time.RFC3339))
-    query := fmt.Sprintf("type:pr author-date:>%s", since.Format(time.RFC3339))
+    query := fmt.Sprintf("type:pr author:%s author-date:>%s", author, since.Format(time.RFC3339))
+    // query := fmt.Sprintf("type:pr author-date:>%s", since.Format(time.RFC3339))
 
     // Build URL with properly encoded query parameters
     baseURL := fmt.Sprintf("%s/search/issues", c.BaseURL)
