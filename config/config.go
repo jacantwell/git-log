@@ -32,8 +32,6 @@ func Load() (*Config, error) {
         GitHubToken:   token,
         Username:      username,
         Days:          90,
-        // Strategy:      collector.StrategyMixed,
-        // Organizations: []string{},
         OutputPath:    "github_activity.json",
     }, nil
 }
