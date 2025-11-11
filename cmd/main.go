@@ -9,6 +9,7 @@ import (
 	"git-log/internal/github"
 	"git-log/internal/processing"
 	"git-log/internal/report"
+	"git-log/internal/email"
 )
 
 func main() {
@@ -59,15 +60,10 @@ func main() {
 	fmt.Println("Generating accomplishment report...")
 	result, err := report.GenerateReport(config.Model, *workLog, config.SystemPromptPath, config.ReportPath)
 
-	// Save report to file
-	if err == nil {
-		err = os.WriteFile(config.ReportPath, []byte(result), 0644)
-		if err != nil {
-			fmt.Printf("Error writing report to file: %v\n", err)
-			return
-		}
-		fmt.Printf("Report saved to %s\n", config.ReportPath)
-	}
+	// Cast file content to byte slice for email attachment
+	fileBytes:= []byte(result)
+
+	err = email.SendEmail(config.ResendToken, fileBytes)
 
 	if err != nil {
 		fmt.Printf("Error generating report: %v\n", err)
