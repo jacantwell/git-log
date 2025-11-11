@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"time"
@@ -56,43 +55,19 @@ func main() {
 		workLog.Summary.DateRange.Start.Format("Jan 2, 2006"),
 		workLog.Summary.DateRange.End.Format("Jan 2, 2006"))
 
-	// Save processed JSON
-	fmt.Println("\nSaving processed data...")
-	processedJSON, err := json.MarshalIndent(workLog, "", "  ")
-	if err != nil {
-		fmt.Printf("Error marshaling processed JSON: %v\n", err)
-		return
-	}
-
-	err = os.WriteFile("work_log.json", processedJSON, 0644)
-	if err != nil {
-		fmt.Printf("Error writing work_log.json: %v\n", err)
-		return
-	}
-	fmt.Println("Processed data saved to work_log.json")
-
-	// Save raw data for reference
-	rawJSON, err := json.MarshalIndent(pullRequests, "", "  ")
-	if err != nil {
-		fmt.Printf("Error marshaling raw JSON: %v\n", err)
-		return
-	}
-
-	err = os.WriteFile(config.OutputPath, rawJSON, 0644)
-	if err != nil {
-		fmt.Printf("Error writing raw data: %v\n", err)
-		return
-	}
-
 	// Analyse and generate report
 	fmt.Println("Generating accomplishment report...")
-	err = report.GenerateReport(config.Model)
+	result, err := report.GenerateReport(config.Model, *workLog, config.SystemPromptPath, config.ReportPath)
 
-	fmt.Println("\n✓ All files generated successfully!")
-	fmt.Println("\nGenerated files:")
-	fmt.Println("  - work_log.json (processed data)")
-	fmt.Println("  - github_activity.json (raw data)")
-	fmt.Println("  - report.md (accomplishment report)")
+	// Save report to file
+	if err == nil {
+		err = os.WriteFile(config.ReportPath, []byte(result), 0644)
+		if err != nil {
+			fmt.Printf("Error writing report to file: %v\n", err)
+			return
+		}
+		fmt.Printf("Report saved to %s\n", config.ReportPath)
+	}
 
 	if err != nil {
 		fmt.Printf("Error generating report: %v\n", err)
