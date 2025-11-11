@@ -36,7 +36,7 @@ func Load() (*Config, error) {
 		GoogleToken:      googleToken,
 		GitHubToken:      githubToken,
 		Username:         username,
-		Days:             3,
+		Days:             30,
 		ReportPath:       "report.md",
 		SystemPromptPath: "internal/report/system_prompt.md",
 		Model:            "gemini-2.5-flash",
