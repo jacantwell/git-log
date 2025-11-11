@@ -1,0 +1,142 @@
+{
+  "repositories": [
+    {
+      "name": "account-service",
+      "full_name": "company/account-service",
+      "url": "https://github.com/company/account-service",
+      "pull_requests": [
+        {
+          "number": 34,
+          "title": "Add FastAPI endpoint for updating user account details",
+          "body": "- Add `PATCH /users/{id}` endpoint with validation\n- Implement role-based access control\n- Add integration tests for update flows\n- Improve error return structure using RFC7807 format",
+          "state": "closed",
+          "created_at": "2025-11-03T10:12:32Z",
+          "updated_at": "2025-11-03T15:22:10Z",
+          "closed_at": "2025-11-03T15:22:10Z",
+          "merged_at": "2025-11-03T15:22:10Z",
+          "url": "https://github.com/company/account-service/pull/34",
+          "comments": 5
+        },
+        {
+          "number": 31,
+          "title": "Introduce pytest test suite with coverage requirements",
+          "body": "- Add pytest, pytest-asyncio, and pytest-cov\n- Add 120+ unit and integration tests\n- Enforce 85% coverage threshold in CI\n- Add GitHub Action to publish HTML coverage report to artifacts",
+          "state": "closed",
+          "created_at": "2025-10-28T09:42:11Z",
+          "updated_at": "2025-10-29T13:11:39Z",
+          "closed_at": "2025-10-29T13:11:39Z",
+          "merged_at": "2025-10-29T13:11:39Z",
+          "url": "https://github.com/company/account-service/pull/31",
+          "comments": 8
+        }
+      ],
+      "commits": [
+        {
+          "sha": "b7412b22e7e0b20f05f8fa6a5b91b62f8d2b7750",
+          "message": "feat(api): implement PATCH /users/{id} endpoint with RBAC guards",
+          "date": "2025-11-03T14:27:18Z",
+          "url": "https://github.com/company/account-service/commit/b7412b22e7e0b20f05f8fa6a5b91b62f8d2b7750"
+        },
+        {
+          "sha": "a9ddbc4339e21b2b9770047c5c4976db7f4c2e12",
+          "message": "test(api): add integration tests for user update permissions and validation",
+          "date": "2025-11-03T13:12:44Z",
+          "url": "https://github.com/company/account-service/commit/a9ddbc4339e21b2b9770047c5c4976db7f4c2e12"
+        },
+        {
+          "sha": "8dc3efb21e1f569ca8c8bd27ad27fe2d5f019879",
+          "message": "ci: enforce 85% pytest coverage gate in GitHub actions",
+          "date": "2025-10-29T11:03:55Z",
+          "url": "https://github.com/company/account-service/commit/8dc3efb21e1f569ca8c8bd27ad27fe2d5f019879"
+        },
+        {
+          "sha": "3c99d197cdbdd63c0244e9e5b5c1a443f477d7dc",
+          "message": "test: add pytest suite with async DB and API fixtures",
+          "date": "2025-10-28T17:22:08Z",
+          "url": "https://github.com/company/account-service/commit/3c99d197cdbdd63c0244e9e5b5c1a443f477d7dc"
+        }
+      ]
+    },
+    {
+      "name": "billing-system",
+      "full_name": "company/billing-system",
+      "url": "https://github.com/company/billing-system",
+      "pull_requests": [
+        {
+          "number": 52,
+          "title": "Refactor invoice generation to async worker queue",
+          "body": "- Migrate invoice PDF generation to background workers (Celery)\n- Improve API response latency by 40%\n- Add retry logic and dead-letter handling\n- Add monitoring via Prometheus counters",
+          "state": "closed",
+          "created_at": "2025-11-01T08:55:21Z",
+          "updated_at": "2025-11-02T14:18:45Z",
+          "closed_at": "2025-11-02T14:18:45Z",
+          "merged_at": "2025-11-02T14:18:45Z",
+          "url": "https://github.com/company/billing-system/pull/52",
+          "comments": 6
+        }
+      ],
+      "commits": [
+        {
+          "sha": "f78a1e24e3b7b7b6f2177c699bd2248f1fdab84a",
+          "message": "perf(worker): move invoice generation to queued background task",
+          "date": "2025-11-01T17:48:10Z",
+          "url": "https://github.com/company/billing-system/commit/f78a1e24e3b7b7b6f2177c699bd2248f1fdab84a"
+        },
+        {
+          "sha": "a40bb33df8cb16c5d5d34b1ae9b6dbf8c2b3cd11",
+          "message": "feat(monitoring): add Prometheus metrics for invoice queue health",
+          "date": "2025-11-01T15:16:02Z",
+          "url": "https://github.com/company/billing-system/commit/a40bb33df8cb16c5d5d34b1ae9b6dbf8c2b3cd11"
+        },
+        {
+          "sha": "fbacfac8c62707a51f39d0b0b748afc1f6f3a555",
+          "message": "fix(queue): add retry and backoff for failed invoice jobs",
+          "date": "2025-11-01T12:04:55Z",
+          "url": "https://github.com/company/billing-system/commit/fbacfac8c62707a51f39d0b0b748afc1f6f3a555"
+        }
+      ]
+    },
+    {
+      "name": "frontend-portal",
+      "full_name": "company/frontend-portal",
+      "url": "https://github.com/company/frontend-portal",
+      "pull_requests": [
+        {
+          "number": 77,
+          "title": "Implement UI for account settings with API integration",
+          "body": "- Add settings page with reactive form validation\n- Integrate user update endpoint\n- Add success & error toast states\n- Include comprehensive e2e Playwright tests",
+          "state": "closed",
+          "created_at": "2025-10-25T15:17:09Z",
+          "updated_at": "2025-10-27T11:32:41Z",
+          "closed_at": "2025-10-27T11:32:41Z",
+          "merged_at": "2025-10-27T11:32:41Z",
+          "url": "https://github.com/company/frontend-portal/pull/77",
+          "comments": 9
+        }
+      ],
+      "commits": [
+        {
+          "sha": "1e2bd5bf7276be5fb5e3b776f6f87990f93a9a1b",
+          "message": "feat(ui): add account settings page with schema validation",
+          "date": "2025-10-26T13:22:19Z",
+          "url": "https://github.com/company/frontend-portal/commit/1e2bd5bf7276be5fb5e3b776f6f87990f93a9a1b"
+        },
+        {
+          "sha": "11bd956d8cedc8b2a5ef7fa27ed5d64d9a1d4d5f",
+          "message": "test(e2e): add Playwright flow for updating account settings",
+          "date": "2025-10-26T10:39:22Z",
+          "url": "https://github.com/company/frontend-portal/commit/11bd956d8cedc8b2a5ef7fa27ed5d64d9a1d4d5f"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_repositories": 3,
+    "total_pull_requests": 5,
+    "total_commits": 9,
+    "date_range": {
+      "start": "2025-10-25T15:17:09Z",
+      "end": "2025-11-03T15:22:10Z"
+    }
+  }
+}
