@@ -6,19 +6,18 @@ import (
 )
 
 type Config struct {
-    GoogleToken string
-	GitHubToken string
-	Username    string
-	Days        int
-	OutputPath string
-	Model      string
+	GoogleToken      string
+	GitHubToken      string
+	Username         string
+	Days             int
+	ReportPath       string
+	SystemPromptPath string
+	Model            string
 }
 
 func Load() (*Config, error) {
-	// For now, load from environment variables
-	// Later you can add YAML/JSON config file support
 
-    googleToken := os.Getenv("GOOGLE_API_KEY")
+	googleToken := os.Getenv("GOOGLE_API_KEY")
 	if googleToken == "" {
 		return nil, fmt.Errorf("GITHUB_TOKEN environment variable not set")
 	}
@@ -34,11 +33,12 @@ func Load() (*Config, error) {
 	}
 
 	return &Config{
-        GoogleToken: googleToken,
-		GitHubToken: githubToken,
-		Username:    username,
-		Days:        3,
-		OutputPath: "github_activity.json",
-        Model:      "gemini-2.5-flash",
+		GoogleToken:      googleToken,
+		GitHubToken:      githubToken,
+		Username:         username,
+		Days:             3,
+		ReportPath:       "report.md",
+		SystemPromptPath: "internal/report/system_prompt.md",
+		Model:            "gemini-2.5-flash",
 	}, nil
 }
