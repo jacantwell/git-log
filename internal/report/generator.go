@@ -5,40 +5,42 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"encoding/json"
 
 	"google.golang.org/genai"
+	"git-log/internal/processing"
 )
 
-func GenerateReport(model string) error {
+func GenerateReport(model string, workLog processing.WorkLog, systemPromptPath string, reportPath string) (string, error) {
 
-	systemPromptBytes, err := os.ReadFile("internal/analyser/system_prompt.md")
+	systemPromptBytes, err := os.ReadFile(systemPromptPath)
 	if err != nil {
-		log.Fatalf("Failed to read system_prompt.md: %v", err)
-		return err
+		log.Fatalf("Failed to read system prompt file: %v", err)
+		return "", err
 	}
 	systemPromptString := string(systemPromptBytes)
 	systemContent := genai.NewContentFromText(systemPromptString, genai.RoleUser)
 
 	// We check if the file exists. If not (e.g., first run), we use an empty string.
 	var reportString string
-	reportBytes, err := os.ReadFile("report.md")
+	reportBytes, err := os.ReadFile(reportPath)
 	if err != nil {
 		if os.IsNotExist(err) {
 			reportString = ""
 		} else {
-			log.Fatalf("Failed to read report.md: %v", err)
-			return err
+			log.Fatalf("Failed to read report file: %v", err)
+			return "", err
 		}
 	} else {
 		reportString = string(reportBytes)
 	}
 
-	// Load the work log. This file should exist.
-	logBytes, err := os.ReadFile("work_log.json")
+	logBytes, err := json.Marshal(workLog)
 	if err != nil {
-		log.Fatalf("Failed to read work_log.json: %v", err)
-		return err
+		fmt.Printf("Error converting workLog to JSON: %v\n", err)
+		return "", err
 	}
+
 	logString := string(logBytes)
 
 	userPromptTemplate := `Here is the existing accomplishment report and the work log for the past month.
@@ -61,7 +63,7 @@ work_log.json:
 	client, err := genai.NewClient(ctx, nil)
 	if err != nil {
 		log.Fatalf("Failed to create new client: %v", err)
-		return err
+		return "", err
 	}
 
 	config := &genai.GenerateContentConfig{
@@ -78,11 +80,11 @@ work_log.json:
 	)
 	if err != nil {
 		log.Fatalf("Failed to generate content: %v", err)
-		return err
+		return "", err
 	}
 
 	// The result.Text() will be the complete, updated Markdown report
 	fmt.Println(result.Text())
 
-	return nil
+	return result.Text(), nil
 }
