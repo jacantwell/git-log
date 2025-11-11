@@ -2,6 +2,7 @@ package processing
 
 import (
 	"git-log/internal/github"
+	"time"
 )
 
 // FilterPullRequests extracts essential information from GitHub PR search results
@@ -50,17 +51,13 @@ func FilterCommits(items []github.CommitSearchResultItem) []Commit {
 			URL:     item.HTMLURL,
 		}
 		
-		// Parse the date from the commit
+		// Parse the date from the commit author
 		if item.Commit.Author.Date != "" {
 			// GitHub returns dates in RFC3339 format
-			// The date is already a string, we'll need to parse it
-			// For now, we'll use the CreatedAt from the search result
-			// In a real scenario, you'd parse item.Commit.Author.Date
-		}
-		
-		// Check if commit is verified
-		if item.Commit.Verification != nil {
-			commit.Verified = item.Commit.Verification.Verified
+			parsedDate, err := time.Parse(time.RFC3339, item.Commit.Author.Date)
+			if err == nil {
+				commit.Date = parsedDate
+			}
 		}
 		
 		filtered = append(filtered, commit)
