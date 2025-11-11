@@ -41,7 +41,6 @@ type Commit struct {
 	Message     string    `json:"message"`
 	Date        time.Time `json:"date"`
 	URL         string    `json:"url"`
-	Verified    bool      `json:"verified,omitempty"`
 }
 
 // Summary provides high-level statistics
