@@ -1,17 +1,17 @@
 package main
 
 import (
-    "encoding/json"
-    "fmt"
+	"encoding/json"
+	"fmt"
 	"os"
 	"time"
 
-	"git-log/internal/github"
 	"git-log/config"
+	"git-log/internal/github"
+	"git-log/internal/processing"
 )
 
 func main() {
-
 	// Load configuration
 	config, err := config.Load()
 	if err != nil {
@@ -24,59 +24,67 @@ func main() {
 
 	var client = github.NewClient(config.GitHubToken)
 
-    // commits, err := client.GetCommits(config.Username, since)
-    // if err != nil {
-    //     fmt.Printf("Error getting commits: %v\n", err)
-    //     return
-    // }
+	fmt.Println("Fetching GitHub activity...")
 
+	// Fetch commits
+	commits, err := client.GetCommits(config.Username, since)
+	if err != nil {
+		fmt.Printf("Warning: Error getting commits: %v\n", err)
+		commits = []github.CommitSearchResultItem{}
+	}
+
+	// Fetch pull requests
 	pullRequests, err := client.GetPullRequests(config.Username, since)
 	if err != nil {
 		fmt.Printf("Error getting pull requests: %v\n", err)
 		return
 	}
 
+	fmt.Printf("Found %d pull requests and %d commits\n", len(pullRequests), len(commits))
 
-    // // Output summary
-    // fmt.Printf("\nFound activity in %d repositories\n", len(commits))
-    // for _, commit := range commits {
-	// 	fmt.Printf("\n%s:\n", commit.Repository.FullName)
-    //     fmt.Printf("  Message: %s\n", commit.Commit.Message)
-    // }
+	// Process and group data
+	fmt.Println("Processing activity data...")
+	workLog := processing.GroupByRepository(pullRequests, commits)
 
-    // // Save to file
-    // output, err := json.MarshalIndent(commits, "", "  ")
-    // if err != nil {
-    //     fmt.Printf("Error marshaling JSON: %v\n", err)
-    //     return
-    // }
+	// Display summary
+	fmt.Printf("\n=== Summary ===\n")
+	fmt.Printf("Repositories: %d\n", workLog.Summary.TotalRepositories)
+	fmt.Printf("Pull Requests: %d\n", workLog.Summary.TotalPullRequests)
+	fmt.Printf("Commits: %d\n", workLog.Summary.TotalCommits)
+	fmt.Printf("Period: %s to %s\n",
+		workLog.Summary.DateRange.Start.Format("Jan 2, 2006"),
+		workLog.Summary.DateRange.End.Format("Jan 2, 2006"))
 
-    // err = os.WriteFile(config.OutputPath, output, 0644)
-    // if err != nil {
-    //     fmt.Printf("Error writing file: %v\n", err)
-    //     return
-    // }
+	// Save processed JSON
+	fmt.Println("\nSaving processed data...")
+	processedJSON, err := json.MarshalIndent(workLog, "", "  ")
+	if err != nil {
+		fmt.Printf("Error marshaling processed JSON: %v\n", err)
+		return
+	}
 
-    // Output summary
-    fmt.Printf("\nFound activity in %d repositories\n", len(pullRequests))
-    for _, pr := range pullRequests {
-		fmt.Printf("\n%s:\n", pr.Repository.FullName)
-        fmt.Printf("  Title: %s\n", pr.Title)
-		fmt.Printf("  Body: %s\n", pr.Body)
-    }
+	err = os.WriteFile("work_log.json", processedJSON, 0644)
+	if err != nil {
+		fmt.Printf("Error writing work_log.json: %v\n", err)
+		return
+	}
+	fmt.Println("Processed data saved to work_log.json")
 
-    // Save to file
-    output, err := json.MarshalIndent(pullRequests, "", "  ")
-    if err != nil {
-        fmt.Printf("Error marshaling JSON: %v\n", err)
-        return
-    }
+	// Save raw data for reference
+	rawJSON, err := json.MarshalIndent(pullRequests, "", "  ")
+	if err != nil {
+		fmt.Printf("Error marshaling raw JSON: %v\n", err)
+		return
+	}
 
-    err = os.WriteFile(config.OutputPath, output, 0644)
-    if err != nil {
-        fmt.Printf("Error writing file: %v\n", err)
-        return
-    }
+	err = os.WriteFile(config.OutputPath, rawJSON, 0644)
+	if err != nil {
+		fmt.Printf("Error writing raw data: %v\n", err)
+		return
+	}
 
-    fmt.Println("\nActivity saved to github_activity.json")
+	fmt.Println("\n✓ All files generated successfully!")
+	fmt.Println("\nGenerated files:")
+	fmt.Println("  - work_log.json (processed data)")
+	fmt.Println("  - github_activity.json (raw data)")
 }
