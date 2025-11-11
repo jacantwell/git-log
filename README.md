@@ -24,10 +24,10 @@ You will need the following accounts and keys:
 
     ```
     # Replace with your actual GitHub username
-    GITHUB_USERNAME="YOUR_GITHUB_USERNAME" 
+    USERNAME="YOUR_GITHUB_USERNAME" 
 
     # Replace with your GitHub Personal Access Token (PAT)
-    GITHUB_TOKEN="YOUR_GITHUB_PAT"
+    ACCESS_TOKEN="YOUR_GITHUB_PAT"
 
     # Replace with your Google AI Studio API Key
     GOOGLE_API_KEY="YOUR_GOOGLE_API_KEY"
