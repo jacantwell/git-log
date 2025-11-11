@@ -1,39 +1,44 @@
 package config
 
 import (
-    "fmt"
-    "os"
+	"fmt"
+	"os"
 )
 
 type Config struct {
-    GitHubToken   string
-    Username      string
-    Days          int
-    // Strategy      collector.CollectionStrategy
-    // Organizations []string
-    OutputPath    string
+    GoogleToken string
+	GitHubToken string
+	Username    string
+	Days        int
+	OutputPath string
+	Model      string
 }
 
 func Load() (*Config, error) {
-    // For now, load from environment variables
-    // Later you can add YAML/JSON config file support
-    
-    token := os.Getenv("GITHUB_TOKEN")
-    if token == "" {
-        return nil, fmt.Errorf("GITHUB_TOKEN environment variable not set")
-    }
+	// For now, load from environment variables
+	// Later you can add YAML/JSON config file support
 
-    username := os.Getenv("GITHUB_USERNAME")
-    if username == "" {
-        return nil, fmt.Errorf("GITHUB_USERNAME environment variable not set")
-    }
+    googleToken := os.Getenv("GOOGLE_API_KEY")
+	if googleToken == "" {
+		return nil, fmt.Errorf("GITHUB_TOKEN environment variable not set")
+	}
 
-    return &Config{
-        GitHubToken:   token,
-        Username:      username,
-        Days:          90,
-        // Strategy:      collector.StrategyMixed,
-        // Organizations: []string{},
-        OutputPath:    "github_activity.json",
-    }, nil
+	githubToken := os.Getenv("GITHUB_TOKEN")
+	if githubToken == "" {
+		return nil, fmt.Errorf("GITHUB_TOKEN environment variable not set")
+	}
+
+	username := os.Getenv("GITHUB_USERNAME")
+	if username == "" {
+		return nil, fmt.Errorf("GITHUB_USERNAME environment variable not set")
+	}
+
+	return &Config{
+        GoogleToken: googleToken,
+		GitHubToken: githubToken,
+		Username:    username,
+		Days:        3,
+		OutputPath: "github_activity.json",
+        Model:      "gemini-2.5-flash",
+	}, nil
 }
