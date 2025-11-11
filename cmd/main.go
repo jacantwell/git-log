@@ -9,6 +9,7 @@ import (
 	"git-log/config"
 	"git-log/internal/github"
 	"git-log/internal/processing"
+	"git-log/internal/report"
 )
 
 func main() {
@@ -83,8 +84,18 @@ func main() {
 		return
 	}
 
+	// Analyse and generate report
+	fmt.Println("Generating accomplishment report...")
+	err = report.GenerateReport(config.Model)
+
 	fmt.Println("\n✓ All files generated successfully!")
 	fmt.Println("\nGenerated files:")
 	fmt.Println("  - work_log.json (processed data)")
 	fmt.Println("  - github_activity.json (raw data)")
+	fmt.Println("  - report.md (accomplishment report)")
+
+	if err != nil {
+		fmt.Printf("Error generating report: %v\n", err)
+		return
+	}
 }
