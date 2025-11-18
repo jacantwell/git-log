@@ -12,11 +12,18 @@ import (
 )
 
 func main() {
+	if err := run(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func run() error {
 
 	config, err := config.Load()
 	if err != nil {
 		fmt.Printf("Error loading config: %v\n", err)
-		return
+		return fmt.Errorf("loading config: %w", err)
 	}
 
 	// Convert int days to time.Time
@@ -36,7 +43,7 @@ func main() {
 	pullRequests, err := client.GetPullRequests(config.Username, since)
 	if err != nil {
 		fmt.Printf("Error getting pull requests: %v\n", err)
-		return
+		return fmt.Errorf("fetching pull requests: %w", err)
 	}
 
 	fmt.Printf("Found %d pull requests and %d commits\n", len(pullRequests), len(commits))
@@ -57,19 +64,16 @@ func main() {
 	// Analyse and generate report
 	fmt.Println("Generating accomplishment report...")
 	result, err := report.GenerateReport(config.Model, *workLog, config.SystemPromptPath, config.ReportPath)
+	if err != nil {
+		return fmt.Errorf("generating report: %w", err)
+	}
 
 	// Save report to file
-	if err == nil {
-		err = os.WriteFile(config.ReportPath, []byte(result), 0644)
-		if err != nil {
-			fmt.Printf("Error writing report to file: %v\n", err)
-			return
-		}
-		fmt.Printf("Report saved to %s\n", config.ReportPath)
-	}
-
+	err = os.WriteFile(config.ReportPath, []byte(result), 0644)
 	if err != nil {
-		fmt.Printf("Error generating report: %v\n", err)
-		return
+		return fmt.Errorf("writing report to file: %w", err)
 	}
+	fmt.Printf("Report saved to %s\n", config.ReportPath)
+
+	return nil
 }
