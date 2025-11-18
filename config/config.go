@@ -30,7 +30,7 @@ func Load() (*Config, error) {
 	
 	googleToken := os.Getenv("GOOGLE_API_KEY")
 	if googleToken == "" {
-		return nil, fmt.Errorf("GITHUB_TOKEN environment variable not set")
+		return nil, fmt.Errorf("GOOGLE_API_KEY environment variable not set")
 	}
 
 	reportPath := os.Getenv("REPORT_PATH")

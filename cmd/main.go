@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	// Load configuration
+
 	config, err := config.Load()
 	if err != nil {
 		fmt.Printf("Error loading config: %v\n", err)
@@ -22,18 +22,17 @@ func main() {
 	// Convert int days to time.Time
 	since := time.Now().AddDate(0, 0, -config.Days)
 
-	var client = github.NewClient(config.GitHubToken)
-
 	fmt.Println("Fetching GitHub activity...")
 
-	// Fetch commits
+	var client = github.NewClient(config.GitHubToken)
+
 	commits, err := client.GetCommits(config.Username, since)
 	if err != nil {
-		fmt.Printf("Warning: Error getting commits: %v\n", err)
+		fmt.Printf("Warning: Failed to fetch commits: %v\n", err)
+		fmt.Println("Continuing with pull requests only...")
 		commits = []github.CommitSearchResultItem{}
 	}
 
-	// Fetch pull requests
 	pullRequests, err := client.GetPullRequests(config.Username, since)
 	if err != nil {
 		fmt.Printf("Error getting pull requests: %v\n", err)
