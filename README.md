@@ -1,5 +1,56 @@
 # Git-Log
 
+An intelligent CLI tool that automatically transforms your GitHub commit history and pull requests into professional accomplishment summaries using AI. Never manually track your work achievements again - let your git history speak for itself with AI-powered analysis and reporting.
+
+## Technical Implementation
+
+### Backend
+- Language: Go 1.24
+- GitHub Integration: GitHub REST API (Commits & Pull Requests)
+- AI/ML: Google Gemini AI (gemini-2.5-flash)
+- Key Features: Commit aggregation, PR analysis, repository grouping, AI-powered report generation
+
+### Infrastructure
+- Deployment: Standalone CLI tool
+- Configuration: Environment variables with .env file support
+- Output: Markdown formatted reports
+- CI/CD: Ready for GitHub Actions integration
+
+## Key Achievements
+
+- **Automated Activity Tracking**: Built a comprehensive system that fetches all commits and pull requests from GitHub's REST API, eliminating manual tracking of professional accomplishments.
+
+- **Intelligent Data Processing**: Developed a sophisticated pipeline that groups commits and PRs by repository, filters relevant activity, and structures data for optimal AI analysis.
+
+- **AI-Powered Report Generation**: Integrated Google Gemini AI to analyze git history and generate professional, readable summaries of technical work and achievements.
+
+- **Smart Commit Message Analysis**: Leverages existing commit messages and PR descriptions to automatically document work, encouraging better documentation practices through garbage-in-garbage-out principle.
+
+- **Flexible Configuration**: Implemented environment-based configuration allowing customization of timeframes, AI models, and report output paths.
+
+- **Repository-Based Grouping**: Organizes work activity by repository with comprehensive statistics including total repositories, commits, and pull requests over specified time periods.
+
+## Highlights
+
+### Report Generation Pipeline
+1. User configures credentials and settings via environment variables
+2. CLI tool connects to GitHub REST API using personal access token
+3. Fetches all commits and pull requests for specified user and timeframe
+4. Processes and filters activity data, grouping by repository
+5. Structures data with metadata (dates, statistics, repository info)
+6. Google Gemini AI analyzes the work log using custom system prompt
+7. Generates professional markdown report highlighting key accomplishments
+8. Saves report to configurable file path for easy sharing
+
+### Data Processing Pipeline
+1. GitHub API queries with date-based filtering
+2. Commit and PR data extraction with full metadata
+3. Repository-based grouping and aggregation
+4. Statistical summary generation (totals, date ranges)
+5. JSON serialization for AI consumption
+6. Iterative report updates with existing report merging
+7. Markdown output formatting
+
 ## What's This About?
 
 I've always been terrible at keeping track of my accomplishments at work. Everyone says you should maintain a log of what you've done for when you need to update your CV or go for a promotion, but I never actually do it. Then I realized that 99% of my work is already tracked on GitHub through my commits and pull requests. So why not just use that data?
