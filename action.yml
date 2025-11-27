@@ -18,7 +18,7 @@ inputs:
   lookback_days:
     description: 'Number of days to look back. If not provided, auto-calculates based on when the report was last updated (using git commit history).'
     required: false
-    default: ''
+    default: '30'
   model:
     description: 'Google AI model to use'
     required: false
