@@ -8,12 +8,12 @@ import (
 )
 
 type Config struct {
-	GoogleToken      string
-	GitHubToken      string
-	Username         string
-	LookbackDays             int
-	ReportPath       string
-	Model            string
+	GoogleToken  string
+	GitHubToken  string
+	Username     string
+	LookbackDays int
+	ReportPath   string
+	Model        string
 }
 
 func Load() (*Config, error) {
@@ -22,12 +22,12 @@ func Load() (*Config, error) {
 	if githubToken == "" {
 		return nil, fmt.Errorf("ACCESS_TOKEN environment variable not set")
 	}
-	
+
 	username := os.Getenv("USERNAME")
 	if username == "" {
 		return nil, fmt.Errorf("USERNAME environment variable not set")
 	}
-	
+
 	googleToken := os.Getenv("GOOGLE_API_KEY")
 	if googleToken == "" {
 		return nil, fmt.Errorf("GOOGLE_API_KEY environment variable not set")
@@ -37,7 +37,7 @@ func Load() (*Config, error) {
 	if reportPath == "" {
 		reportPath = "report.md"
 	}
-	
+
 	// Make report path absolute if it's relative and we're in GitHub Actions
 	if !filepath.IsAbs(reportPath) {
 		workspace := os.Getenv("GITHUB_WORKSPACE")
@@ -53,17 +53,16 @@ func Load() (*Config, error) {
 
 	days := (os.Getenv("LOOKBACK_DAYS"))
 	daysInt, err := strconv.Atoi(days)
-		if err != nil {
-			return nil, fmt.Errorf("invalid DAYS value: %v", err)
-		}
-
+	if err != nil {
+		return nil, fmt.Errorf("invalid DAYS value: %v", err)
+	}
 
 	return &Config{
-		GoogleToken:      googleToken,
-		GitHubToken:      githubToken,
-		Username:         username,
-		LookbackDays:     daysInt,
-		ReportPath:       reportPath,
-		Model:            model,
+		GoogleToken:  googleToken,
+		GitHubToken:  githubToken,
+		Username:     username,
+		LookbackDays: daysInt,
+		ReportPath:   reportPath,
+		Model:        model,
 	}, nil
 }

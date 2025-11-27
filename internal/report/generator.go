@@ -2,20 +2,20 @@ package report
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
-	"encoding/json"
 
-	"google.golang.org/genai"
 	"git-log/internal/processing"
+	"google.golang.org/genai"
 )
 
 func GenerateReport(model string, workLog processing.WorkLog, reportPath string) (string, error) {
 
 	// Use the embedded system prompt
 	systemContent := genai.NewContentFromText(SystemPrompt, genai.RoleUser)
-	
+
 	// We check if the file exists. If not (e.g., first run), we use an empty string.
 	var reportString string
 	reportBytes, err := os.ReadFile(reportPath)

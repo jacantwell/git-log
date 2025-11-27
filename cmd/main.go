@@ -1,10 +1,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"time"
-	"context"
 
 	"git-log/config"
 	"git-log/internal/github"
@@ -28,8 +28,8 @@ func run() error {
 	}
 
 	// Create a context with timeout for the entire API requests
-    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
-    defer cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
 
 	// Convert int days to time.Time
 	since := time.Now().AddDate(0, 0, -config.LookbackDays)

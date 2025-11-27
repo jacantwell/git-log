@@ -21,26 +21,26 @@ type RepositoryActivity struct {
 
 // PullRequest represents essential PR information
 type PullRequest struct {
-	Number      int       `json:"number"`
-	Title       string    `json:"title"`
-	Body        string    `json:"body"`
-	State       string    `json:"state"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
-	ClosedAt    *time.Time `json:"closed_at,omitempty"`
-	MergedAt    *time.Time `json:"merged_at,omitempty"`
-	URL         string    `json:"url"`
-	Comments    int       `json:"comments"`
-	Labels      []string  `json:"labels,omitempty"`
-	IsDraft     bool      `json:"is_draft,omitempty"`
+	Number    int        `json:"number"`
+	Title     string     `json:"title"`
+	Body      string     `json:"body"`
+	State     string     `json:"state"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
+	ClosedAt  *time.Time `json:"closed_at,omitempty"`
+	MergedAt  *time.Time `json:"merged_at,omitempty"`
+	URL       string     `json:"url"`
+	Comments  int        `json:"comments"`
+	Labels    []string   `json:"labels,omitempty"`
+	IsDraft   bool       `json:"is_draft,omitempty"`
 }
 
 // Commit represents essential commit information
 type Commit struct {
-	SHA         string    `json:"sha"`
-	Message     string    `json:"message"`
-	Date        time.Time `json:"date"`
-	URL         string    `json:"url"`
+	SHA     string    `json:"sha"`
+	Message string    `json:"message"`
+	Date    time.Time `json:"date"`
+	URL     string    `json:"url"`
 }
 
 // Summary provides high-level statistics
