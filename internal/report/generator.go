@@ -11,16 +11,11 @@ import (
 	"git-log/internal/processing"
 )
 
-func GenerateReport(model string, workLog processing.WorkLog, systemPromptPath string, reportPath string) (string, error) {
+func GenerateReport(model string, workLog processing.WorkLog, reportPath string) (string, error) {
 
-	systemPromptBytes, err := os.ReadFile(systemPromptPath)
-	if err != nil {
-		log.Fatalf("Failed to read system prompt file: %v", err)
-		return "", err
-	}
-	systemPromptString := string(systemPromptBytes)
-	systemContent := genai.NewContentFromText(systemPromptString, genai.RoleUser)
-
+	// Use the embedded system prompt
+	systemContent := genai.NewContentFromText(SystemPrompt, genai.RoleUser)
+	
 	// We check if the file exists. If not (e.g., first run), we use an empty string.
 	var reportString string
 	reportBytes, err := os.ReadFile(reportPath)

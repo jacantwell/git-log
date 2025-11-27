@@ -2,12 +2,13 @@ package github
 
 import (
     "encoding/json"
+    "context"
     "fmt"
     "net/url"
     "time"
 )
 
-func (c *Client) GetCommits(author string, since time.Time) ([]CommitSearchResultItem, error) {
+func (c *Client) GetCommits(ctx context.Context, author string, since time.Time) ([]CommitSearchResultItem, error) {
     query := fmt.Sprintf("author:%s author-date:>%s", author, since.Format(time.RFC3339))
 
     // Build URL with properly encoded query parameters
@@ -20,7 +21,7 @@ func (c *Client) GetCommits(author string, since time.Time) ([]CommitSearchResul
 
     requestURL := fmt.Sprintf("%s?%s", baseURL, params.Encode())
 
-    body, err := c.makeRequest(requestURL)
+    body, err := c.makeRequest(ctx, requestURL)
     if err != nil {
         return nil, err
     }

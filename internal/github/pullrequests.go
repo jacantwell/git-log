@@ -2,11 +2,12 @@ package github
 
 import (
     "encoding/json"
+    "context"
     "net/url"
     "fmt"
     "time"
 )
-func (c *Client) GetPullRequests(author string, since time.Time) ([]IssueSearchResultItem, error) {
+func (c *Client) GetPullRequests(ctx context.Context, author string, since time.Time) ([]IssueSearchResultItem, error) {
     query := fmt.Sprintf("is:pr author:%s created:>%s", author, since.Format(time.RFC3339))
 
     // Build URL with properly encoded query parameters
@@ -19,7 +20,7 @@ func (c *Client) GetPullRequests(author string, since time.Time) ([]IssueSearchR
 
     requestURL := fmt.Sprintf("%s?%s", baseURL, params.Encode())
 
-    body, err := c.makeRequest(requestURL)
+    body, err := c.makeRequest(ctx, requestURL)
     if err != nil {
         return nil, err
     }

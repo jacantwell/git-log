@@ -3,6 +3,7 @@ package github
 import (
     "fmt"
     "io"
+    "context"
     "net/http"
     "time"
 )
@@ -21,8 +22,8 @@ func NewClient(token string) *Client {
     }
 }
 
-func (c *Client) makeRequest(url string) ([]byte, error) {
-    req, err := http.NewRequest("GET", url, nil)
+func (c *Client) makeRequest(ctx context.Context, url string) ([]byte, error) {
+    req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
     if err != nil {
         return nil, err
     }

@@ -45,7 +45,7 @@ func Load() (*Config, error) {
 
 	days := (os.Getenv("DAYS"))
 	if days == "" {
-		days = "30"
+		days = "14"
 	}
 
 	// Convert Days to int

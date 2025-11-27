@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"context"
 
 	"git-log/config"
 	"git-log/internal/github"
@@ -26,6 +27,10 @@ func run() error {
 		return fmt.Errorf("loading config: %w", err)
 	}
 
+	// Create a context with timeout for the entire API requests
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+    defer cancel()
+
 	// Convert int days to time.Time
 	since := time.Now().AddDate(0, 0, -config.Days)
 
@@ -33,14 +38,14 @@ func run() error {
 
 	var client = github.NewClient(config.GitHubToken)
 
-	commits, err := client.GetCommits(config.Username, since)
+	commits, err := client.GetCommits(ctx, config.Username, since)
 	if err != nil {
 		fmt.Printf("Warning: Failed to fetch commits: %v\n", err)
 		fmt.Println("Continuing with pull requests only...")
 		commits = []github.CommitSearchResultItem{}
 	}
 
-	pullRequests, err := client.GetPullRequests(config.Username, since)
+	pullRequests, err := client.GetPullRequests(ctx, config.Username, since)
 	if err != nil {
 		fmt.Printf("Error getting pull requests: %v\n", err)
 		return fmt.Errorf("fetching pull requests: %w", err)
