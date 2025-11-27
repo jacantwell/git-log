@@ -1,0 +1,40 @@
+name: 'Git Log Report Generator'
+description: 'Generate accomplishment reports from GitHub commit and PR history using AI'
+author: 'Jasper Cantwell'
+branding:
+  icon: 'file-text'
+  color: 'blue'
+
+inputs:
+  github-token:
+    description: 'GitHub token for API access'
+    required: true
+  username:
+    description: 'GitHub username to generate report for'
+    required: true
+  google-api-key:
+    description: 'Google AI Studio API key'
+    required: true
+  lookback_days:
+    description: 'Number of days to look back. If not provided, auto-calculates based on when the report was last updated (using git commit history).'
+    required: false
+    default: ''
+  model:
+    description: 'Google AI model to use'
+    required: false
+    default: 'gemini-2.5-flash'
+  report-path:
+    description: 'Path where the report should be saved'
+    required: false
+    default: 'report.md'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    ACCESS_TOKEN: ${{ inputs.github-token }}
+    USERNAME: ${{ inputs.username }}
+    GOOGLE_API_KEY: ${{ inputs.google-api-key }}
+    LOOKBACK_DAYS: ${{ inputs.lookback_days }}
+    MODEL: ${{ inputs.model }}
+    REPORT_PATH: ${{ inputs.report-path }}

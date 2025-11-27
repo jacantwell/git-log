@@ -47,10 +47,9 @@ You will need the following accounts and keys:
 
 You can customize the report generation by editing the config/config.go file. The following settings are typically available to adjust:
 
-- Days: Change the number of days the tool will search back for commits and PRs.
+- LookbackDays (env: LOOKBACK_DAYS): Change the number of days the tool will search back for commits and PRs.
 
-- Model: Specify a different Google AI model to use for the summarization.
+- Model (env: MODEL): Specify a different Google AI model to use for the summarization.
 
-- ReportPath: Define the file path where the final summary report will be saved.
-
+- ReportPath (env: REPORT_PATH): Define the file path where the final summary report will be saved.
 
