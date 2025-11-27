@@ -32,7 +32,7 @@ func run() error {
     defer cancel()
 
 	// Convert int days to time.Time
-	since := time.Now().AddDate(0, 0, -config.Days)
+	since := time.Now().AddDate(0, 0, -config.LookbackDays)
 
 	fmt.Println("Fetching GitHub activity...")
 
@@ -68,7 +68,7 @@ func run() error {
 
 	// Analyse and generate report
 	fmt.Println("Generating accomplishment report...")
-	result, err := report.GenerateReport(config.Model, *workLog, config.SystemPromptPath, config.ReportPath)
+	result, err := report.GenerateReport(config.Model, *workLog, config.ReportPath)
 	if err != nil {
 		return fmt.Errorf("generating report: %w", err)
 	}
