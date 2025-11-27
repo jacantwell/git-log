@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -10,9 +11,8 @@ type Config struct {
 	GoogleToken      string
 	GitHubToken      string
 	Username         string
-	Days             int
+	LookbackDays             int
 	ReportPath       string
-	SystemPromptPath string
 	Model            string
 }
 
@@ -25,7 +25,7 @@ func Load() (*Config, error) {
 	
 	username := os.Getenv("USERNAME")
 	if username == "" {
-		return nil, fmt.Errorf("GITHUB_USERNAME environment variable not set")
+		return nil, fmt.Errorf("USERNAME environment variable not set")
 	}
 	
 	googleToken := os.Getenv("GOOGLE_API_KEY")
@@ -37,32 +37,33 @@ func Load() (*Config, error) {
 	if reportPath == "" {
 		reportPath = "report.md"
 	}
+	
+	// Make report path absolute if it's relative and we're in GitHub Actions
+	if !filepath.IsAbs(reportPath) {
+		workspace := os.Getenv("GITHUB_WORKSPACE")
+		if workspace != "" {
+			reportPath = filepath.Join(workspace, reportPath)
+		}
+	}
 
 	model := os.Getenv("MODEL")
 	if model == "" {
 		model = "gemini-2.5-flash"
 	}
 
-	days := (os.Getenv("DAYS"))
-	if days == "" {
-		days = "14"
-	}
-
-	// Convert Days to int
+	days := (os.Getenv("LOOKBACK_DAYS"))
 	daysInt, err := strconv.Atoi(days)
-	if err != nil {
-		return nil, fmt.Errorf("invalid DAYS value: %v", err)
-	}
-
+		if err != nil {
+			return nil, fmt.Errorf("invalid DAYS value: %v", err)
+		}
 
 
 	return &Config{
 		GoogleToken:      googleToken,
 		GitHubToken:      githubToken,
 		Username:         username,
-		Days:             daysInt,
+		LookbackDays:     daysInt,
 		ReportPath:       reportPath,
-		SystemPromptPath: "internal/report/system_prompt.md",
 		Model:            model,
 	}, nil
 }
